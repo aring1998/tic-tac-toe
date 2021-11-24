@@ -5,7 +5,6 @@ const webSocket = require('./web-socket/index')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
-const usersRouter = require('./routes/users')
 const gamesRouter = require('./routes/games')
 
 const appBase = express()
@@ -33,7 +32,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/api/users', usersRouter)
 app.use('/api/games', gamesRouter)
 
 // catch 404 and forward to error handler

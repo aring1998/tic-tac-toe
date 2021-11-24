@@ -5,6 +5,8 @@
 ## 📖介绍
 **原生JS+Node.js**开发的全栈Web项目，通过WebSocket协议实现在线对战的井字游戏
 
+<img src="http://aring.3vfree.net/my-img/tic-tac-toe/demo.gif" alt="" />
+
 ## 📃目录结构
 ```
 root

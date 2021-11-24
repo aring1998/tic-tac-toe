@@ -14,7 +14,7 @@ const addGame = (data) => {
 }
 
 const updateGame = async (query, value) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     Games.updateOne(query, value, (err, res) => {
       if (!err) {
         resolve(res)

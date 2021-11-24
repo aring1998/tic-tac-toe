@@ -36,6 +36,25 @@ export class Popup {
       document.getElementById('loading')?.remove()
     }
   }
+  // 警告框
+  alert(content, next) {
+    const popShade = document.createElement('div')
+    popShade.classList.add('popup-shade', 'transparent')
+    popShade.setAttribute('id', 'alert')
+    const pop = document.createElement('div')
+    pop.classList.add('popup', 'alert')
+    pop.innerHTML = `
+      <span>${content || '请等待...'}</span>
+      <button id="alertNext" class="common-btn">好的</button>
+    `
+    popShade.appendChild(pop)
+    this.wrap.appendChild(popShade)
+    document.getElementById('alertNext').addEventListener('click', async e => {
+      e.stopPropagation()
+      await next()
+      document.getElementById('alert').remove()
+    })
+  }
   // 确认框
   confirm(title, content, next) {
     const popShade = document.createElement('div')

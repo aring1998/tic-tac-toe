@@ -35,8 +35,7 @@ const joinRoom = async (req, res, next) => {
  */
 const battleBegin = async val => {
   const roomId = val
-  // const first = Math.random() > 0.5 ? 0 : 1
-  const first = 1
+  const first = Math.random() > 0.5 ? 0 : 1
   await gamesModal.updateGame({ roomId }, { state: 2, first, player: first })
   const data = await gamesModal.findGame({ roomId })
   return data

@@ -15,6 +15,14 @@ input::-webkit-inner-spin-button {
 .hide {
   display: none !important;
 }
+.common-btn {
+  height: 30px;
+  width: 50px;
+  background-color: unset;
+  color: #fff;
+  border: 2px #fff solid;
+  cursor: pointer;
+}
 .tic-tac-toe {
   width: 100vw;
   height: 100vh;
@@ -97,6 +105,9 @@ input::-webkit-inner-spin-button {
   align-items: center;
   z-index: 1001;
 }
+.tic-tac-toe .popup-shade.transparent {
+  background-color: unset;
+}
 .tic-tac-toe .popup {
   border: 3px #fff solid;
   width: 300px;
@@ -131,7 +142,7 @@ input::-webkit-inner-spin-button {
   border: 2px #fff solid;
   cursor: pointer;
 }
-.tic-tac-toe .message {
+.tic-tac-toe .popup.message {
   position: absolute;
   background-color: rgba(255, 255, 255, .5);
   border: 3px #fff solid;
@@ -148,9 +159,15 @@ input::-webkit-inner-spin-button {
   align-items: center;
   font-size: 16px;
 }
-.tic-tac-toe .fade-out {
-  animation: fade-out 1s linear !important;
+.tic-tac-toe .popup.message.fade-out {
+  animation: fade-out 1s linear;
   animation-fill-mode: forwards;
+}
+.tic-tac-toe .popup.loading {
+  text-align: center;
+}
+.tic-tac-toe .popup.alert {
+  justify-content: space-evenly;
 }
 
 @keyframes fade-in {
@@ -161,7 +178,6 @@ input::-webkit-inner-spin-button {
     opacity: 1;
   }
 }
-
 @keyframes fade-out {
   0% {
     opacity: 1;
