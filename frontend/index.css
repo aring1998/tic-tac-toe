@@ -73,13 +73,17 @@ input::-webkit-inner-spin-button {
 }
 .tic-tac-toe .game-state {
   font-size: 14px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 .tic-tac-toe .game-wrap {
   height: 300px;
   width: 300px;
   display: flex;
   flex-flow: row wrap;
+}
+.tic-tac-toe .timer {
+  font-size: 12px;
+  margin-bottom: 30px;
 }
 .tic-tac-toe .cell {
   display: flex;

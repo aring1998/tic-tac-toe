@@ -26,11 +26,14 @@ class TicTacToe {
   $pop = new Popup()
   key = UUID.generate()
   gameState = ''
+  time = 10
+  timer
   constructor() {
     this.init()
     // 双向绑定
     bind(this, 'player', document.getElementsByClassName('player')[0])
     bind(this, 'gameState', document.getElementsByClassName('game-state')[0])
+    bind(this, 'time', document.getElementById('time'))
   }
   init() {
     this.$pop.loading.open('加载中···<br>长时间未响应请尝试刷新页面')
@@ -52,13 +55,29 @@ class TicTacToe {
       this.$pop.loading.close()
       this.ws.send(JSON.stringify({ key: this.key, type: 'init' }))
     }
+    this.ws.onclose = () => {
+      this.$pop.alert('连接已断开', () => location.reload())
+    }
   }
   click(e) {
     if (this.roomInfo.player !== this.playerType) return this.$pop.message.common('请等待对手下棋')
-    // 获取点击元素的dataset
-    const num = e.target.dataset.num
+    let num
+    // 如果是超时时调用
+    if (!e) {
+      for (let i in this.gameData) {
+        if (this.gameData[i] === 0) {
+          num = Number(i)
+          break
+        }
+      }
+    } else {
+      // 获取点击元素的dataset
+      num = e.target.dataset.num
+    }
+
     if (this.cells[num].innerText) return
     this.gameData[num] = this.player === 'O' ? 1 : 2
+    this.timerReset()
 
     this.ws.send(JSON.stringify({
       key: this.key,
@@ -112,10 +131,13 @@ class TicTacToe {
   async battle() {
     this.ws.onmessage = e => {
       const data = JSON.parse(e.data)
-      if (data.code === -1) return this.$pop.alert('对方已逃跑', () => { this.resetGame() })
+      if (data.code === -1) return this.$pop.alert('对方已逃跑', () => this.resetGame())
       this.roomInfo = data
       this.gameData = this.roomInfo.gameData
-      if (this.roomInfo.player === this.playerType) this.gameState = '请下棋'
+      if (this.roomInfo.player === this.playerType) {
+        this.gameState = '请下棋'
+        this.timerBegin()
+      }
       else this.gameState = '请等待其他玩家下棋'
       this.render()
       this.result()
@@ -139,9 +161,7 @@ class TicTacToe {
       // 比对三个位置的文本，若全相等则判定胜利
       if (first === second && second === third) {
         return setTimeout(() => {
-          this.$pop.alert(this.roomInfo.player === this.playerType ? '对方赢了' : '您赢了', () => {
-            this.resetGame()
-          })
+          this.$pop.alert(this.roomInfo.player === this.playerType ? '对方赢了' : '您赢了', () => this.resetGame())
         }, 300);
       }
     }
@@ -149,7 +169,11 @@ class TicTacToe {
     for (let i of this.gameData) {
       if (i === 0) break
       if (i !== 0) step++
-      if (step === 9) return this.$pop.alert('平局', () => { this.resetGame() })
+      if (step === 9) {
+        return setTimeout(() => {
+          this.$pop.alert('平局', () => this.resetGame())
+        }, 300);
+      }
     }
   }
   // 判定谁先手
@@ -157,6 +181,7 @@ class TicTacToe {
     if (data.first === this.playerType) {
       this.player = 'O'
       this.gameState = '请下棋'
+      this.timerBegin()
     } else {
       this.player = 'X'
       this.gameState = '请等待其他玩家下棋'
@@ -164,11 +189,24 @@ class TicTacToe {
   }
   // 重置游戏
   resetGame() {
+    this.timerReset()
     this.enter.classList.remove('hide')
     this.gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let i of this.cells) {
       i.innerText = ''
     }
+  }
+  // 计时器运作
+  timerBegin() {
+    this.timerReset()
+    this.timer = setInterval(() => {
+      this.time = `${Number(this.time) - 1}`
+      if (Number(this.time) < 0) this.click()
+    }, 1000);
+  }
+  timerReset() {
+    this.time = 10
+    clearInterval(this.timer)
   }
 }
 
