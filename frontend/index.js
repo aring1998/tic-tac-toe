@@ -2,14 +2,15 @@ import { bind } from './utils/index.js'
 import { api } from './utils/api.js'
 import { Popup } from './utils/popup.js'
 class TicTacToe {
+  enter = document.getElementsByClassName('enter')[0]
   roomInfo = {}
   // 玩家类型，0: 创建者；1: 加入者
   playerType = 0
   player = 'O'
   gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   cells = []
-  // ws = new WebSocket('ws://localhost:3700/ws') // 本地环境
-  ws = new WebSocket('ws://81.68.189.158:3700/ws') // 正式环境
+  ws = new WebSocket('ws://localhost:3700/ws') // 本地环境
+  // ws = new WebSocket('ws://81.68.189.158:3700/ws') // 正式环境
   // 胜利条件
   winCombo = [
     [0, 1, 2],
@@ -31,7 +32,7 @@ class TicTacToe {
     bind(this, 'player', document.getElementsByClassName('player')[0])
     bind(this, 'gameState', document.getElementsByClassName('game-state')[0])
   }
-  async init() {
+  init() {
     this.$pop.loading.open('加载中···<br>长时间未响应请尝试刷新页面')
     const wrap = document.getElementsByClassName('game-wrap')[0]
     wrap.onclick = (e) => this.click(e)
@@ -72,7 +73,7 @@ class TicTacToe {
     const res = await this.$api.post('games/createRoom')
     if (res.code === 0) {
       this.roomInfo = res.data
-      document.getElementsByClassName('enter')[0].classList.add('hide')
+      this.enter.classList.add('hide')
       this.$pop.loading.open(`请等待其他玩家加入...<br>您的房间号：${this.roomInfo.roomId}`)
       this.ws.onmessage = e => {
         const data = JSON.parse(e.data)
@@ -92,7 +93,7 @@ class TicTacToe {
         roomId: value
       })
       if (res.code === 0) {
-        document.getElementsByClassName('enter')[0].classList.add('hide')
+        this.enter.classList.add('hide')
         const roomId = res.data.roomId
         this.ws.onmessage = e => {
           const data = JSON.parse(e.data)
@@ -110,7 +111,9 @@ class TicTacToe {
   // 开始战斗
   async battle() {
     this.ws.onmessage = e => {
-      this.roomInfo = JSON.parse(e.data)
+      const data = JSON.parse(e.data)
+      if (data.code === -1) return this.$pop.alert('对方已逃跑', () => { this.resetGame() })
+      this.roomInfo = data
       this.gameData = this.roomInfo.gameData
       if (this.roomInfo.player === this.playerType) this.gameState = '请下棋'
       else this.gameState = '请等待其他玩家下棋'
@@ -137,10 +140,16 @@ class TicTacToe {
       if (first === second && second === third) {
         return setTimeout(() => {
           this.$pop.alert(this.roomInfo.player === this.playerType ? '对方赢了' : '您赢了', () => {
-            alert('hello')
+            this.resetGame()
           })
-        }, 1000);
+        }, 300);
       }
+    }
+    let step = 0
+    for (let i of this.gameData) {
+      if (i === 0) break
+      if (i !== 0) step++
+      if (step === 9) return this.$pop.alert('平局', () => { this.resetGame() })
     }
   }
   // 判定谁先手
@@ -151,6 +160,14 @@ class TicTacToe {
     } else {
       this.player = 'X'
       this.gameState = '请等待其他玩家下棋'
+    }
+  }
+  // 重置游戏
+  resetGame() {
+    this.enter.classList.remove('hide')
+    this.gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for (let i of this.cells) {
+      i.innerText = ''
     }
   }
 }

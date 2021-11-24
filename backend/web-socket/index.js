@@ -51,8 +51,10 @@ const webSocket  = async (ws, req) => {
 
   ws.on('close', async () => {
     for (let i in clients) {
+      if (clients[i].roomId === roomId) clients[i].ws.send(JSON.stringify({ code: -1 }))
       if (clients[i].key === key) clients.splice(i, 1)
     }
+    games.delRoom({ roomId })
   })
 }
 

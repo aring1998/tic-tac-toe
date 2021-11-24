@@ -55,9 +55,18 @@ const updateGameData = async (val) => {
   return data
 }
 
+/**
+ * 删除房间
+ */
+const delRoom = async val => {
+  if (!val) return
+  await gamesModal.deleteGame({ ...val })
+}
+
 module.exports = {
   createRoom,
   joinRoom,
   battleBegin,
-  updateGameData
+  updateGameData,
+  delRoom
 }

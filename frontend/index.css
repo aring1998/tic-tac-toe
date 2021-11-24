@@ -142,7 +142,7 @@ input::-webkit-inner-spin-button {
   border: 2px #fff solid;
   cursor: pointer;
 }
-.tic-tac-toe .popup.message {
+.tic-tac-toe .message {
   position: absolute;
   background-color: rgba(255, 255, 255, .5);
   border: 3px #fff solid;
@@ -159,7 +159,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   font-size: 16px;
 }
-.tic-tac-toe .popup.message.fade-out {
+.tic-tac-toe .message.fade-out {
   animation: fade-out 1s linear;
   animation-fill-mode: forwards;
 }

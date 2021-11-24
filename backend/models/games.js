@@ -1,11 +1,11 @@
 const { Games } = require('../db/index')
 
-const findGame = async (data) => {
+const findGame = async data => {
   const res = await Games.findOne({ ...data })
   return res?._doc
 }
 
-const addGame = (data) => {
+const addGame = data => {
   const game = new Games({
     ...data,
     created: Date.now()
@@ -23,8 +23,13 @@ const updateGame = async (query, value) => {
   }).then(res => res)
 }
 
+const deleteGame = data => {
+  return Games.deleteOne({ ...data })
+}
+
 module.exports = {
   findGame,
   addGame,
-  updateGame
+  updateGame,
+  deleteGame
 }
