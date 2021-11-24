@@ -7,7 +7,8 @@ class TicTacToe {
   player = 'O'
   gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   cells = []
-  ws = new WebSocket('ws://localhost:3700/ws')
+  // ws = new WebSocket('ws://localhost:3700/ws')
+  ws = new WebSocket('ws://81.68.189.158:3700/ws')
   // 胜利条件
   winCombo = [
     [0, 1, 2],
