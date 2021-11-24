@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+input:focus,
+button:focus {
+  outline: 0;
+}
+/* 去除数字输入框小箭头 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.hide {
+  display: none !important;
+}
+.tic-tac-toe {
+  width: 100vw;
+  height: 100vh;
+  color: #fff;
+  background-color: #111;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.tic-tac-toe .enter {
+  width: 100vw;
+  height: 100vh;
+  background-color: #111;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.tic-tac-toe .enter h2 {
+  font-size: 50px;
+  margin-bottom: 50px;
+}
+.tic-tac-toe .enter button {
+  border: 2px #fff solid;
+  background-color: #111;
+  color: #fff;
+  height: 80px;
+  width: 300px;
+  margin-bottom: 30px;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+}
+.tic-tac-toe h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.tic-tac-toe .current {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.tic-tac-toe .game-state {
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.tic-tac-toe .game-wrap {
+  height: 300px;
+  width: 300px;
+  display: flex;
+  flex-flow: row wrap;
+}
+.tic-tac-toe .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 33.33%;
+  height: 33.33%;
+  font-size: 30px;
+  color: #fff;
+  border: 1px #fff solid;
+  cursor: pointer;
+  user-select: none;
+}
+.tic-tac-toe .popup-shade {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+.tic-tac-toe .popup {
+  border: 3px #fff solid;
+  width: 300px;
+  height: 200px;
+  background-color: #111;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+.tic-tac-toe .popup.confirm {
+  justify-content: space-evenly;
+}
+.tic-tac-toe .popup.confirm input {
+  width: 80px;
+  height: 30px;
+  padding: 0 20px;
+  font-size: 16px;
+}
+.tic-tac-toe .popup.confirm .btn-wrap {
+  display: flex;
+  width: 100%;
+  padding: 0 30px;
+  justify-content: space-evenly;
+}
+.tic-tac-toe .popup.confirm button {
+  height: 30px;
+  width: 50px;
+  background-color: unset;
+  color: #fff;
+  border: 2px #fff solid;
+  cursor: pointer;
+}
+.tic-tac-toe .message {
+  position: absolute;
+  background-color: rgba(255, 255, 255, .5);
+  border: 3px #fff solid;
+  border-radius: 5px;
+  width: 200px;
+  height: 40px;
+  opacity: 0;
+  animation: fade-in 1s linear;
+  animation-fill-mode: forwards;
+  top: 20px;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+.tic-tac-toe .fade-out {
+  animation: fade-out 1s linear !important;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

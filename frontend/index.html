@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./index.css">
+  <title>井字游戏</title>
+</head>
+<body>
+  <main class="tic-tac-toe" id="app">
+    <section class="enter">
+      <h2>井字游戏</h2>
+      <button id="create">创建房间</button>
+      <button id="join">加入房间</button>
+    </section>
+
+    <h2>井字游戏</h2>
+    <span class="current">当前玩家：<span class="player">O</span></span>
+    <span class="game-state">请等待其他玩家下棋</span>
+    <section class="game-wrap"></section>
+  </main>
+
+  <script src="./flugin/axios.min.js"></script>
+  <script src="./flugin/uuid.core.js"></script>
+  <script src="./index.js" type="module"></script>
+</body>
+</html>
