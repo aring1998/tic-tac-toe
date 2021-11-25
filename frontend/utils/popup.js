@@ -13,8 +13,8 @@ export class Popup {
         message.classList.add('fade-out')
         setTimeout(() => {
           message.remove()
-        }, 1000);
-      }, closeTime);
+        }, 1000)
+      }, closeTime)
     }
   }
   // 等待提示框
@@ -45,15 +45,18 @@ export class Popup {
     pop.classList.add('popup', 'alert')
     pop.innerHTML = `
       <span>${content || '请等待...'}</span>
-      <button id="alertNext" class="common-btn">好的</button>
     `
+    const btn = document.createElement('button')
+    btn.classList.add('common-btn')
+    btn.innerHTML = '好的'
     popShade.appendChild(pop)
-    this.wrap.appendChild(popShade)
-    document.getElementById('alertNext').addEventListener('click', async e => {
+    pop.appendChild(btn)
+    btn.addEventListener('click', async e => {
       e.stopPropagation()
-      await next()
-      document.getElementById('alert').remove()
+      if (next) await next()
+      popShade.remove()
     })
+    this.wrap.appendChild(popShade)
   }
   // 确认框
   confirm(title, content, next) {
