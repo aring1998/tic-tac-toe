@@ -110,9 +110,10 @@ class TicTacToe {
   async battle() {
     this.ws.onmessage = e => {
       const data = JSON.parse(e.data)
-      if (data.code === -1) return this.$pop.alert('对方已逃跑', () => this.resetGame())
-      // 对战结束时，清空定时器
-      if (data.code === -2) return this.timerReset()
+      if (data.code === -1) {
+        this.timerReset()
+        return this.$pop.alert('对方已逃跑', () => this.resetGame())
+      }
       this.roomInfo = data
       this.gameData = this.roomInfo.gameData
       if (this.roomInfo.player === this.playerType) {
@@ -171,6 +172,7 @@ class TicTacToe {
       // 比对三个位置的文本，若全相等则判定胜利
       if (first === second && second === third) {
         return setTimeout(() => {
+          this.timerReset()
           this.$pop.alert(this.roomInfo.player === this.playerType ? '对方赢了' : '您赢了', () => this.resetGame())
         }, 300);
       }
@@ -181,6 +183,7 @@ class TicTacToe {
       if (i !== 0) step++
       if (step === 9) {
         return setTimeout(() => {
+          this.timerReset()
           this.$pop.alert('平局', () => this.resetGame())
         }, 300);
       }
@@ -199,7 +202,6 @@ class TicTacToe {
   }
   // 重置游戏
   resetGame() {
-    this.timerReset()
     this.enter.classList.remove('hide')
     this.gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let i of this.cells) {
