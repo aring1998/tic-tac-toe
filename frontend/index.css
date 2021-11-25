@@ -149,7 +149,7 @@ input::-webkit-inner-spin-button {
 }
 .tic-tac-toe .message {
   position: absolute;
-  background-color: rgba(255, 255, 255, .5);
+  background-color: #aaa;
   border: 3px #fff solid;
   border-radius: 5px;
   width: 200px;

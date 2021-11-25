@@ -61,34 +61,6 @@ class TicTacToe {
       this.$pop.alert('连接已断开', () => location.reload())
     }
   }
-  click(e) {
-    if (this.roomInfo.player !== this.playerType) return this.$pop.message.common('请等待对手下棋')
-    let num
-    // 如果是超时时调用
-    if (!e) {
-      for (let i in this.gameData) {
-        if (this.gameData[i] === 0) {
-          num = Number(i)
-          break
-        }
-      }
-    } else {
-      // 获取点击元素的dataset
-      num = e.target.dataset.num
-    }
-
-    if (this.cells[num].innerText) return
-    this.gameData[num] = this.player === 'O' ? 1 : 2
-    this.timerReset()
-
-    this.ws.send(JSON.stringify({
-      key: this.key,
-      roomId: this.roomInfo.roomId,
-      gameData: this.gameData,
-      player: this.playerType,
-      type: 'battle'
-    }))
-  }
   // 创建房间
   async createRoom() {
     const res = await this.$api.post('games/createRoom')
@@ -139,6 +111,8 @@ class TicTacToe {
     this.ws.onmessage = e => {
       const data = JSON.parse(e.data)
       if (data.code === -1) return this.$pop.alert('对方已逃跑', () => this.resetGame())
+      // 对战结束时，清空定时器
+      if (data.code === -2) return this.timerReset()
       this.roomInfo = data
       this.gameData = this.roomInfo.gameData
       if (this.roomInfo.player === this.playerType) {
@@ -149,6 +123,35 @@ class TicTacToe {
       this.render()
       this.result()
     }
+  }
+  // 点击方块格
+  click(e) {
+    if (this.roomInfo.player !== this.playerType) return this.$pop.message.common('请等待对手下棋')
+    let num
+    // 如果超时时调用
+    if (!e) {
+      for (let i in this.gameData) {
+        if (this.gameData[i] === 0) {
+          num = Number(i)
+          break
+        }
+      }
+    } else {
+      // 获取点击元素的dataset
+      num = e.target.dataset.num
+    }
+
+    if (this.cells[num].innerText) return
+    this.gameData[num] = this.player === 'O' ? 1 : 2
+    this.timerReset()
+
+    this.ws.send(JSON.stringify({
+      key: this.key,
+      roomId: this.roomInfo.roomId,
+      gameData: this.gameData,
+      player: this.playerType,
+      type: 'battle'
+    }))
   }
   // 根据gameData渲染
   render() {

@@ -47,6 +47,12 @@ const webSocket  = async (ws, req) => {
       // 游戏结束时
       case 'end': {
         games.delRoom({ roomId })
+        for (let i of clients) {
+          if (i.roomId === roomId) {
+            i.roomId = ''
+            i.ws.send(JSON.stringify({ code: -2 }))
+          }
+        }
         roomId = ''
       }
     }
