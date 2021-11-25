@@ -202,6 +202,7 @@ class TicTacToe {
     for (let i of this.cells) {
       i.innerText = ''
     }
+    this.ws.send(JSON.stringify({ roomId: this.roomInfo.roomId, type: 'end' }))
   }
   // 计时器运作
   timerBegin() {

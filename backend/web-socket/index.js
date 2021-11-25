@@ -38,13 +38,15 @@ const webSocket  = async (ws, req) => {
       }
       // 对战双方点击时
       case 'battle': {
-        const { roomId } = JSON.parse(val)
-
         const data = await games.updateGameData(JSON.parse(val))
         for (let i of clients) {
           if (i.roomId === roomId) i.ws.send(JSON.stringify(data))
         }
         break
+      }
+      // 游戏结束时
+      case 'end': {
+        games.delRoom({ roomId })
       }
     }
   })
