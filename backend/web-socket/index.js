@@ -47,6 +47,7 @@ const webSocket  = async (ws, req) => {
       // 游戏结束时
       case 'end': {
         games.delRoom({ roomId })
+        roomId = ''
       }
     }
   })
