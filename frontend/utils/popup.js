@@ -26,9 +26,7 @@ export class Popup {
       popShade.setAttribute('id', 'loading')
       const pop = document.createElement('div')
       pop.classList.add('popup', 'loading')
-      pop.innerHTML = `
-        <span>${content || '请等待...'}</span>
-      `
+      pop.innerHTML = `${content || '请等待...'}`
       popShade.appendChild(pop)
       this.wrap.appendChild(popShade)
     },
@@ -37,7 +35,7 @@ export class Popup {
     }
   }
   // 警告框
-  alert(content, next) {
+  alert(content, next, btnName) {
     const popShade = document.createElement('div')
     popShade.classList.add('popup-shade', 'transparent')
     popShade.setAttribute('id', 'alert')
@@ -48,7 +46,7 @@ export class Popup {
     `
     const btn = document.createElement('button')
     btn.classList.add('common-btn')
-    btn.innerHTML = '好的'
+    btn.innerHTML = btnName || '好的'
     popShade.appendChild(pop)
     pop.appendChild(btn)
     btn.addEventListener('click', async e => {

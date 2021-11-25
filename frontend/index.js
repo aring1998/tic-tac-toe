@@ -1,4 +1,4 @@
-import { bind } from './utils/index.js'
+import { bind, getParameter, copyer } from './utils/index.js'
 import { api } from './utils/api.js'
 import { Popup } from './utils/popup.js'
 class TicTacToe {
@@ -9,8 +9,8 @@ class TicTacToe {
   player = 'O'
   gameData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   cells = []
-  ws = new WebSocket('ws://localhost:3700/ws') // 本地环境
-  // ws = new WebSocket('ws://81.68.189.158:3700/ws') // 正式环境
+  // ws = new WebSocket('ws://localhost:3700/ws') // 本地环境
+  ws = new WebSocket('ws://81.68.189.158:3700/ws') // 正式环境
   // 胜利条件
   winCombo = [
     [0, 1, 2],
@@ -34,6 +34,8 @@ class TicTacToe {
     bind(this, 'player', document.getElementsByClassName('player')[0])
     bind(this, 'gameState', document.getElementsByClassName('game-state')[0])
     bind(this, 'time', document.getElementById('time'))
+    // 判断url是否带房间号参数
+    if (getParameter('roomId')) this.joinRoom(getParameter('roomId'))
   }
   init() {
     this.$pop.loading.open('加载中···<br>长时间未响应请尝试刷新页面')
@@ -49,7 +51,7 @@ class TicTacToe {
     this.cells = document.getElementsByClassName('cell')
     // 绑定按钮点击事件
     document.getElementById('create').onclick = () => this.createRoom()
-    document.getElementById('join').onclick = () => this.joinRoom()
+    document.getElementById('join').onclick = () => this.$pop.confirm('加入房间', '请输入房间号', value => this.joinRoom(value))
     // 连接初始ws
     this.ws.onopen = () => {
       this.$pop.loading.close()
@@ -93,7 +95,14 @@ class TicTacToe {
     if (res.code === 0) {
       this.roomInfo = res.data
       this.enter.classList.add('hide')
-      this.$pop.loading.open(`请等待其他玩家加入...<br>您的房间号：${this.roomInfo.roomId}`)
+      this.$pop.loading.open(`
+        请等待其他玩家加入...<br>您的房间号：${this.roomInfo.roomId}<br>
+        <button class="common-btn" id="share">复制分享链接</button>
+      `)
+      document.getElementById('share').onclick = () => {
+        copyer(`${location.href}?roomId=${this.roomInfo.roomId}`)
+        this.$pop.message.common('您已复制房间链接，快去分享给好友吧~')
+      }
       this.ws.onmessage = e => {
         const data = JSON.parse(e.data)
         this.roomInfo = data
@@ -105,27 +114,25 @@ class TicTacToe {
     }
   }
   // 加入房间
-  async joinRoom() {
-    this.$pop.confirm('加入房间', '请输入房间号', async value => {
-      if (value.length !== 4) return this.$pop.message.common('房间号为四位数')
-      const res = await this.$api.post('games/joinRoom', {
-        roomId: value
-      })
-      if (res.code === 0) {
-        this.enter.classList.add('hide')
-        const roomId = res.data.roomId
-        this.ws.onmessage = e => {
-          const data = JSON.parse(e.data)
-          this.roomInfo = data
-          // 加入者修改playerType
-          this.playerType = 1
-          this.battle()
-          this.choiceFirst(data)
-        }
-        this.ws.send(JSON.stringify({ key: this.key, roomId, type: 'join' }))
-        return true
-      }
+  async joinRoom(roomId) {
+    if (roomId.length !== 4) return this.$pop.message.common('房间号为四位数')
+    const res = await this.$api.post('games/joinRoom', {
+      roomId
     })
+    if (res.code === 0) {
+      this.enter.classList.add('hide')
+      const roomId = res.data.roomId
+      this.ws.onmessage = e => {
+        const data = JSON.parse(e.data)
+        this.roomInfo = data
+        // 加入者修改playerType
+        this.playerType = 1
+        this.battle()
+        this.choiceFirst(data)
+      }
+      this.ws.send(JSON.stringify({ key: this.key, roomId, type: 'join' }))
+      return true
+    }
   }
   // 开始战斗
   async battle() {

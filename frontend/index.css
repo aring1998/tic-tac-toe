@@ -17,7 +17,8 @@ input::-webkit-inner-spin-button {
 }
 .common-btn {
   height: 30px;
-  width: 50px;
+  min-width: 50px;
+  padding: 0 10px;
   background-color: unset;
   color: #fff;
   border: 2px #fff solid;
@@ -152,7 +153,8 @@ input::-webkit-inner-spin-button {
   border: 3px #fff solid;
   border-radius: 5px;
   width: 200px;
-  height: 40px;
+  min-height: 40px;
+  padding: 4px;
   opacity: 0;
   animation: fade-in 1s linear;
   animation-fill-mode: forwards;
