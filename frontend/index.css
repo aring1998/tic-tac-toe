@@ -129,9 +129,12 @@ input::-webkit-inner-spin-button {
 }
 .tic-tac-toe .popup.confirm input {
   width: 80px;
-  height: 30px;
-  padding: 0 20px;
+  height: 35px;
+  padding: 0 15px;
   font-size: 16px;
+  border: 2px #fff solid;
+  background-color: #111;
+  color: #fff;
 }
 .tic-tac-toe .popup.confirm .btn-wrap {
   display: flex;
@@ -172,8 +175,25 @@ input::-webkit-inner-spin-button {
 .tic-tac-toe .popup.loading {
   text-align: center;
 }
+.tic-tac-toe .popup.loading .close-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  cursor: pointer;
+  font-size: 25px;
+}
 .tic-tac-toe .popup.alert {
   justify-content: space-evenly;
+}
+.tic-tac-toe .gitee {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1002;
+  opacity: .75;
+}
+.tic-tac-toe .gitee img {
+  width: 200px;
 }
 
 @keyframes fade-in {

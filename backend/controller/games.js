@@ -27,6 +27,7 @@ const joinRoom = async (req, res, next) => {
   if (!roomId) return fail(res, '房间号必填')
   const data = await gamesModal.findGame({ roomId })
   if (!data) return fail(res, '找不到对应的房间')
+  if (data.state === 2) return fail(res, '房间已满人')
   suc(res, data, '加入房间成功')
 }
 

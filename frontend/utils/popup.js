@@ -20,13 +20,21 @@ export class Popup {
   // 等待提示框
   loading = {
     wrap: this.wrap,
-    open(content) {
+    open(content, onCancel) {
       const popShade = document.createElement('div')
       popShade.classList.add('popup-shade')
       popShade.setAttribute('id', 'loading')
       const pop = document.createElement('div')
       pop.classList.add('popup', 'loading')
       pop.innerHTML = `${content || '请等待...'}`
+      const closeBtn = document.createElement('div')
+      closeBtn.classList.add('close-btn')
+      closeBtn.innerHTML = '×'
+      closeBtn.addEventListener('click', () => {
+        onCancel()
+        popShade.remove()
+      })
+      pop.appendChild(closeBtn)
       popShade.appendChild(pop)
       this.wrap.appendChild(popShade)
     },
@@ -74,6 +82,7 @@ export class Popup {
     `
     popShade.appendChild(pop)
     this.wrap.appendChild(popShade)
+    document.getElementById('confirmInput').focus()
     document.getElementById('confirmCancel').addEventListener('click', e => {
       e.stopPropagation()
       document.getElementById('confirm').remove()
