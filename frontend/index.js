@@ -78,6 +78,7 @@ class TicTacToe {
         this.enter.classList.add('hide')
         const data = JSON.parse(e.data)
         this.roomInfo = data
+        this.playerType = 0
         this.battle()
         this.choiceFirst(data)
         this.$pop.loading.close()
@@ -97,7 +98,6 @@ class TicTacToe {
       this.ws.onmessage = e => {
         const data = JSON.parse(e.data)
         this.roomInfo = data
-        // 加入者修改playerType
         this.playerType = 1
         this.battle()
         this.choiceFirst(data)

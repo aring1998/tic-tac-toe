@@ -135,6 +135,7 @@ input::-webkit-inner-spin-button {
   border: 2px #fff solid;
   background-color: #111;
   color: #fff;
+  text-align: center;
 }
 .tic-tac-toe .popup.confirm .btn-wrap {
   display: flex;

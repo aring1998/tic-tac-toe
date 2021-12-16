@@ -27,14 +27,16 @@ export class Popup {
       const pop = document.createElement('div')
       pop.classList.add('popup', 'loading')
       pop.innerHTML = `${content || '请等待...'}`
-      const closeBtn = document.createElement('div')
-      closeBtn.classList.add('close-btn')
-      closeBtn.innerHTML = '×'
-      closeBtn.addEventListener('click', () => {
-        onCancel()
-        popShade.remove()
-      })
-      pop.appendChild(closeBtn)
+      if (onCancel) {
+        const closeBtn = document.createElement('div')
+        closeBtn.classList.add('close-btn')
+        closeBtn.innerHTML = '×'
+        closeBtn.addEventListener('click', () => {
+          onCancel()
+          popShade.remove()
+        })
+        pop.appendChild(closeBtn)
+      }
       popShade.appendChild(pop)
       this.wrap.appendChild(popShade)
     },
