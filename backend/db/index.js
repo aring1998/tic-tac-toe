@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+dotenv.config()
+
 // mongoose.connect('mongodb://localhost/tic-tac-toe', {  // 本地环境
-mongoose.connect('mongodb://81.68.189.158:26918/tic-tac-toe', {  // 正式环境
+mongoose.connect(`mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
