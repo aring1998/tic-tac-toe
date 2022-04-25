@@ -71,7 +71,7 @@ class TicTacToe {
         <button class="common-btn" style="margin: 5px 0" id="share">复制分享链接</button>
       `, () => { this.ws.send(JSON.stringify({ roomId: this.roomInfo.roomId, type: 'end' })) })
       document.getElementById('share').onclick = () => {
-        copyer(`${location.href}?roomId=${this.roomInfo.roomId}`)
+        copyer(`${location.origin}${location.pathname}?roomId=${this.roomInfo.roomId}`)
         this.$pop.message.common('您已复制房间链接，快去分享给好友吧~')
       }
       this.ws.onmessage = e => {
